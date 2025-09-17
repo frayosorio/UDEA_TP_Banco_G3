@@ -4,12 +4,14 @@ public class Credito extends Cuenta {
 
     private double valorPrestado;
     private double tasa;
-    private double plazo;
+    private int plazo;
     private double valorRetirado;
 
-    public Credito(String titular, String numero, double valorPrestado) {
+    public Credito(String titular, String numero, double valorPrestado, double tasa, int plazo) {
         super(titular, numero, 0);
         this.valorPrestado = valorPrestado;
+        this.tasa = tasa;
+        this.plazo = plazo;
     }
 
     @Override
@@ -38,6 +40,22 @@ public class Credito extends Cuenta {
             System.out.println("Ya la deuda está pagada");
         }
 
+    }
+
+    public double getValorPrestado() {
+        return valorPrestado;
+    }
+
+    public double getTasa() {
+        return tasa;
+    }
+
+    public double getValorRetirado() {
+        return valorRetirado;
+    }
+
+    public int getPlazo() {
+        return plazo;
     }
 
 }

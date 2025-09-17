@@ -1,4 +1,6 @@
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -22,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import modelos.Ahorros;
 import modelos.Corriente;
+import modelos.Credito;
 import modelos.Cuenta;
 
 public class FrmBanco extends JFrame {
@@ -38,7 +42,7 @@ public class FrmBanco extends JFrame {
     private JComboBox cmbTipoCuenta, cmbTipoTransaccion, cmbCuenta;
 
     private JLabel lblSaldoInicial, lblSobregiro, lblPlazo;
-    private List<Cuenta> cuentas;
+    private List<Cuenta> cuentas = new ArrayList<>();
 
     JTabbedPane tp;
 
@@ -291,12 +295,33 @@ public class FrmBanco extends JFrame {
     }
 
     private void btnQuitarCuentaClick() {
-
+        if (tblCuentas.getSelectedRow() >= 0) {
+            cuentas.remove(tblCuentas.getSelectedRow());
+            mostrarCuentas();
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar la cuenta");
+        }
     }
 
     private void btnGuardarCuentaClick() {
         pnlEditarCuenta.setVisible(false);
+        switch (cmbTipoCuenta.getSelectedIndex()) {
+            case 0:
+                cuentas.add(new Ahorros(txtTitular.getText(), txtNumero.getText(),
+                        Double.parseDouble(txtSaldoInicial.getText())));
+                break;
+            case 1:
+                cuentas.add(new Corriente(txtTitular.getText(), txtNumero.getText(),
+                        Double.parseDouble(txtSaldoInicial.getText()), Double.parseDouble(txtSobregiro.getText())));
+                break;
+            case 2:
+                cuentas.add(new Credito(txtTitular.getText(), txtNumero.getText(),
+                        Double.parseDouble(txtSaldoInicial.getText()), Double.parseDouble(txtSobregiro.getText()),
+                        Integer.parseInt(txtPlazo.getText())));
 
+                break;
+        }
+        mostrarCuentas();
     }
 
     private void btnCancelarCuentaClick() {
@@ -326,11 +351,21 @@ public class FrmBanco extends JFrame {
         for (Cuenta c : cuentas) {
             datos[fila][0] = c instanceof Ahorros ? "Ahorros" : c instanceof Corriente ? "Corriente" : "Crédito";
             datos[fila][1] = c.getNumero();
+            datos[fila][2] = c.getTitular();
 
-
-            //encabezadosCuentas = new String[] { "Tipo", "Número", "Titular", "Saldo", "Sobregiro", "Valor Prestado", "Tasa", "Plazo", "Cuota" };
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            datos[fila][3] = df.format(c.getSaldo());
+            datos[fila][4] = c instanceof Corriente ? df.format(((Corriente) c).getSobregiro()) : "";
+            datos[fila][5] = c instanceof Credito ? df.format(((Credito) c).getValorPrestado()) : "";
+            datos[fila][6] = c instanceof Credito ? df.format(((Credito) c).getTasa()) : "";
+            datos[fila][7] = c instanceof Credito ? df.format(((Credito) c).getPlazo()) : "";
+            datos[fila][8] = c instanceof Credito ? df.format(((Credito) c).getCuota()) : "";
             fila++;
         }
+
+        DefaultTableModel dtm = new DefaultTableModel(datos, encabezadosCuentas);
+        tblCuentas.setModel(dtm);
+
     }
 
 }
