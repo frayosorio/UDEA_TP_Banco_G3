@@ -16,26 +16,25 @@ public class Credito extends Cuenta {
 
     @Override
     public boolean retirar(double cantidad) {
-        if (valorRetirado < valorPrestado) {
+        if (valorRetirado + cantidad <= valorPrestado) {
             valorRetirado += cantidad;
             return true;
         } else {
-            System.out.println("Ya fue retirado todo el capital del préstamo");
+            System.out.println("Ya fue retirado todo el capital del préstamo o no hay saldo disponible");
             return false;
         }
     }
 
     public double getCuota() {
-        return valorPrestado * Math.pow(1 + tasa, plazo) * tasa / (Math.pow(1 + tasa, plazo) - 1);
+        double t = tasa / 100;
+        return valorPrestado * Math.pow(1 + t, plazo) * t / (Math.pow(1 + t, plazo) - 1);
     }
 
     public void pagar(double cantidad) {
         if (getSaldo() < valorPrestado) {
-            var intereses = tasa * (valorPrestado - getSaldo());
+            var intereses = (tasa / 100) * (valorPrestado - getSaldo());
             var abonoCapital = cantidad - intereses;
-            if (abonoCapital > 0) {
-                setSaldo(getSaldo() + cantidad);
-            }
+            consignar(abonoCapital);
         } else {
             System.out.println("Ya la deuda está pagada");
         }

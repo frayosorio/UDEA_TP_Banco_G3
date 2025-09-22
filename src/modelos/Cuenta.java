@@ -39,4 +39,9 @@ public abstract class Cuenta {
         }
     }
 
+    @Override
+    public String toString() {
+        return getNumero()+" - "+getTitular();
+    }
+
 }
