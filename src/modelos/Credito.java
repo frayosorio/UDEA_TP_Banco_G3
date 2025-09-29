@@ -30,13 +30,16 @@ public class Credito extends Cuenta {
         return valorPrestado * Math.pow(1 + t, plazo) * t / (Math.pow(1 + t, plazo) - 1);
     }
 
-    public void pagar(double cantidad) {
+    public boolean pagar(double cantidad) {
         if (getSaldo() < valorPrestado) {
             var intereses = (tasa / 100) * (valorPrestado - getSaldo());
             var abonoCapital = cantidad - intereses;
             consignar(abonoCapital);
+            System.out.println("Pago existoso. Nuevo saldo de la deuda:" + (valorPrestado - getSaldo()));
+            return true;
         } else {
             System.out.println("Ya la deuda está pagada");
+            return false;
         }
 
     }
