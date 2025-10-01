@@ -1,5 +1,7 @@
 package modelos;
 
+import java.text.DecimalFormat;
+
 public class Corriente extends Cuenta {
     private double sobregiro;
 
@@ -18,6 +20,20 @@ public class Corriente extends Cuenta {
             System.out.println("Fondos insuficientes para este retiro");
             return false;
         }
+    }
+
+    @Override
+    public String[] mostrarDatos() {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return new String[] {
+                "Corriente",
+                getNumero(),
+                getTitular(),
+                df.format(getSaldo()),
+                df.format(sobregiro),
+                "", "", "", ""
+
+        };
     }
 
     public double getSobregiro() {

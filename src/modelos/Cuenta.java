@@ -29,8 +29,10 @@ public abstract class Cuenta {
         this.saldo = saldo;
     }
 
-    // Método polimórfico
+    // Métodos polimórficos
     public abstract boolean retirar(double cantidad);
+
+    public abstract String[] mostrarDatos();
 
     public boolean consignar(double cantidad) {
         if (cantidad > 0) {

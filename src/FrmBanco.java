@@ -1,13 +1,9 @@
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,12 +17,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
 
 import modelos.Cuenta;
 import modelos.TipoCuenta;
 import modelos.TipoTransaccion;
-import modelos.Transaccion;
 import servicios.CuentaServicio;
 import servicios.TransaccionServicio;
 import servicios.UtilServicio;
@@ -138,7 +132,7 @@ public class FrmBanco extends JFrame {
                         lblPlazo.setVisible(false);
                         txtPlazo.setVisible(false);
                         break;
-                    case 2:
+                    case 2,3:
                         lblSaldoInicial.setText("Valor Prestado:");
                         lblSobregiro.setText("Tasa:");
                         lblSobregiro.setVisible(true);
