@@ -13,7 +13,7 @@ public class MascaraAlfabetica extends DocumentFilter {
         String textoActual = documento.getText(0, documento.getLength());
         textoActual += textoDigitado;
 
-        if (textoActual.matches("[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*")) {
+        if (textoActual.matches("[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)* ?")) {
 
             super.insertString(filtro, offset, textoDigitado, attr);
         }

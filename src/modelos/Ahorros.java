@@ -2,7 +2,10 @@ package modelos;
 
 import java.text.DecimalFormat;
 
-public class Ahorros extends Cuenta {
+import interfaces.IConsignable;
+import interfaces.IRetirable;
+
+public class Ahorros extends Cuenta implements IConsignable, IRetirable {
     private final double TASA_INTERES = 0.02;
 
     public Ahorros(String titular, String numero, double saldo) {
@@ -36,6 +39,11 @@ public class Ahorros extends Cuenta {
                 df.format(getSaldo()),
                 "", "", "", "", ""
         };
+    }
+
+    @Override
+    public boolean consignar(double cantidad) {
+        return incrementarSaldo(cantidad);
     }
 
 }

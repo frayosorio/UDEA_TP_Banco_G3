@@ -2,7 +2,10 @@ package modelos;
 
 import java.text.DecimalFormat;
 
-public class Corriente extends Cuenta {
+import interfaces.IConsignable;
+import interfaces.IRetirable;
+
+public class Corriente extends Cuenta implements IConsignable, IRetirable {
     private double sobregiro;
 
     public Corriente(String titular, String numero, double saldo, double sobregiro) {
@@ -38,6 +41,11 @@ public class Corriente extends Cuenta {
 
     public double getSobregiro() {
         return sobregiro;
+    }
+
+    @Override
+    public boolean consignar(double cantidad) {
+        return incrementarSaldo(cantidad);
     }
 
 }

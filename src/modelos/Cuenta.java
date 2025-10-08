@@ -30,17 +30,15 @@ public abstract class Cuenta {
     }
 
     // Métodos polimórficos
-    public abstract boolean retirar(double cantidad);
-
     public abstract String[] mostrarDatos();
 
-    public boolean consignar(double cantidad) {
-        if (cantidad > 0) {
-            saldo += cantidad;
-            System.out.println("Consignación existosa. Nuevo saldo:" + saldo);
-            return true;
+    protected boolean incrementarSaldo(double cantidad) {
+        if (cantidad <= 0) {
+            System.out.println("Monto no válido para la operación");
+            return false;
         }
-        return false;
+        saldo += cantidad;
+        return true;
     }
 
     @Override

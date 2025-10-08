@@ -2,7 +2,10 @@ package modelos;
 
 import java.text.DecimalFormat;
 
-public class Credito extends Cuenta {
+import interfaces.IPagable;
+import interfaces.IRetirable;
+
+public class Credito extends Cuenta implements IRetirable, IPagable {
 
     private double valorPrestado;
     private double tasa;
@@ -27,23 +30,24 @@ public class Credito extends Cuenta {
         }
     }
 
+    @Override
     public double getCuota() {
         double t = tasa / 100;
         return valorPrestado * Math.pow(1 + t, plazo) * t / (Math.pow(1 + t, plazo) - 1);
     }
 
+    @Override
     public boolean pagar(double cantidad) {
         if (getSaldo() < valorPrestado) {
             var intereses = (tasa / 100) * (valorPrestado - getSaldo());
             var abonoCapital = cantidad - intereses;
-            consignar(abonoCapital);
+            incrementarSaldo(abonoCapital);
             System.out.println("Pago existoso. Nuevo saldo de la deuda:" + (valorPrestado - getSaldo()));
             return true;
         } else {
             System.out.println("Ya la deuda está pagada");
             return false;
         }
-
     }
 
     @Override

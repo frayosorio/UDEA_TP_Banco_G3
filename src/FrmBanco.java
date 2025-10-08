@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import javax.swing.text.AbstractDocument;
 
+import configuracion.ConfiguracionIUCuenta;
 import modelos.Cuenta;
 import modelos.TipoCuenta;
 import modelos.TipoTransaccion;
@@ -118,37 +119,18 @@ public class FrmBanco extends JFrame {
 
         pnlEditarCuenta.add(cmbTipoCuenta);
 
-        cmbTipoCuenta.addActionListener(new ActionListener() {
+        cmbTipoCuenta.addActionListener(e -> {
+            ConfiguracionIUCuenta configuracion = ConfiguracionIUCuenta.getConfiguraciones()
+                    .get(cmbTipoCuenta.getSelectedItem());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (cmbTipoCuenta.getSelectedIndex()) {
-                    case 0:
-                        lblSaldoInicial.setText("Saldo Inicial:");
-                        lblSobregiro.setVisible(false);
-                        txtSobregiro.setVisible(false);
-                        lblPlazo.setVisible(false);
-                        txtPlazo.setVisible(false);
-                        break;
-                    case 1:
-                        lblSaldoInicial.setText("Saldo Inicial:");
-                        lblSobregiro.setText("Sobregiro:");
-                        lblSobregiro.setVisible(true);
-                        txtSobregiro.setVisible(true);
-                        lblPlazo.setVisible(false);
-                        txtPlazo.setVisible(false);
-                        break;
-                    case 2, 3:
-                        lblSaldoInicial.setText("Valor Prestado:");
-                        lblSobregiro.setText("Tasa:");
-                        lblSobregiro.setVisible(true);
-                        txtSobregiro.setVisible(true);
-                        lblPlazo.setVisible(true);
-                        txtPlazo.setVisible(true);
-                        break;
-                }
+            lblSaldoInicial.setText(configuracion.getTextoSaldoInicial());
+            lblSobregiro.setVisible(configuracion.isMostrarSobregiro());
+            txtSobregiro.setVisible(configuracion.isMostrarSobregiro());
+            if (configuracion.isMostrarSobregiro()) {
+                lblSobregiro.setText(configuracion.getTextoSobregiro());
             }
-
+            lblPlazo.setVisible(configuracion.isMostrarPlazo());
+            txtPlazo.setVisible(configuracion.isMostrarPlazo());
         });
 
         lblSobregiro = new JLabel("Sobregiro");
@@ -303,8 +285,8 @@ public class FrmBanco extends JFrame {
     private void btnGuardarCuentaClick() {
         pnlEditarCuenta.setVisible(false);
         try {
-            String titular = txtTitular.getText();
-            String numero = txtNumero.getText();
+            String titular = txtTitular.getText().trim();
+            String numero = txtNumero.getText().trim();
             double saldoInicial = UtilServicio.leerReal(txtSaldoInicial.getText());
             double sobregiro = UtilServicio.leerReal(txtSobregiro.getText());
             int plazo = UtilServicio.leerEntero(txtPlazo.getText());
